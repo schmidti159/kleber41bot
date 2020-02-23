@@ -1,0 +1,2 @@
+export BOT_TOKEN=<insert token>
+export PATH=/package/host/localhost/nodejs-10/bin:$PATH
