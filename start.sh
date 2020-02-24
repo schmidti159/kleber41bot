@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/bash
 
 source setEnv.sh
 npm install
