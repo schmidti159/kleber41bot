@@ -2,23 +2,22 @@
   "name": "kleber41bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/main.ts",
-    "debug": "node --inspect src/main.ts"
+    "start": "nodemon src/main.js",
+    "debug": "node --inspect src/main.js"
   },
   "author": "",
   "license": "",
   "dependencies": {
     "dateformat": "^3.0.3",
+    "dotenv": "^8.2.0",
     "node-cron": "^2.0.3",
     "node-ical": "^0.10.0",
     "telegraf": "^3.36.0"
   },
   "devDependencies": {
     "nodemon": "^2.0",
-    "ts-node": "^8.6.2",
     "typescript": "^3.8.2"
   }
 }
