@@ -15,18 +15,23 @@ const events = ical.sync.parseFile('input/Leerungstermine50655.ics');
 
 // create the bot
 const bot = new telegraf(process.env.BOT_TOKEN);
-bot.start((ctx) => ctx.reply('I will remind you to take out the trash the day before. Features: Use /week to display the events of the next week.'));
+bot.start((ctx) => ctx.reply('I will remind you to take out the trash the day before it is necessary. Features: Use /week to display the events of the next week.'));
 bot.help((ctx) => ctx.reply('Nothing to configure.'));
+
+function eventIsInTheNextDays(e, days) {
+    const now = +new Date();
+    const dateDiff = (e.start - now);
+    const isInTheNextDays = dateDiff < days * dayMilliseconds && dateDiff > 0;
+    const isToday = dateFormat(e.start, 'dd.mm.yyyy') == dateFormat(now, 'dd.mm.yyyy');
+    return isInTheNextDays && !isToday;
+}
 
 // the week command will display all the events of the next week
 bot.command('week', (ctx) => {
     ctx.reply("Events in the next week:");
-    const now = +new Date();
     const nextWeekEvents = Object.values(events)
         .filter((e) => {
-            const isInTheNextWeek = (e.start - now) < weekMilliseconds;
-            const isToday = dateFormat(e.start, 'dd.mm.yyyy') == dateFormat(now, 'dd.mm.yyyy');
-            return isInTheNextWeek && !isToday;
+            return eventIsInTheNextDays(e, 7);
         })
     for(const i in nextWeekEvents) {
         const event = nextWeekEvents[i];
@@ -42,19 +47,16 @@ const chatIds = new Set();
 bot.command('subscribe', (ctx) => {
     chatIds.add(ctx.chat.id);
     console.log("subscribe with chatId: "+ctx.chat.id+" chatIds: ("+Array.from(chatIds).join(", ")+")");
-    ctx.reply("I will notify you the day before.");
+    ctx.reply("I will notify you the day before the trash will be taken away.");
 });
 
 // periodically (twice a day) send a message with all upcoming events to all subscribers
 cron.schedule('0 16,18 * * *', () => {
 //cron.schedule('* * * * *', () => {
-    const now = +new Date();
     chatIds.forEach((chatId) => {
         const nextDayEvents = Object.values(events)
             .filter((e) => {
-                const isInTheNext24Hours = (e.start - now) < dayMilliseconds;
-                const isToday = dateFormat(e.start, 'dd.mm.yyyy') == dateFormat(now, 'dd.mm.yyyy');
-                return isInTheNext24Hours && !isToday;
+                return eventIsInTheNextDays(e, 1);
             });
         for(const i in nextDayEvents) {
             const event = nextDayEvents[i];
