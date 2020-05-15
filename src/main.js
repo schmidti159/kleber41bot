@@ -8,10 +8,13 @@ import ical from 'node-ical';
 
 import {week} from "./cmds/week.js";
 import {subscribe} from "./cmds/subscribe.js";
-import cron from "./cron.js";
+import {cron} from "./cron.js";
+import {database} from "./database.js";
 
 // get the events
 const events = ical.sync.parseFile('input/Leerungstermine50655.ics');
+database.init();
+database.checkConnection();
 
 // create the bot
 const bot = new telegraf(process.env.BOT_TOKEN);
@@ -28,11 +31,11 @@ bot.command('week', (ctx) => {
 const chatIds = new Set();
 
 bot.command('subscribe', (ctx) => {
-    subscribe(ctx, chatIds)
+    subscribe(ctx, database);
 });
 
 // periodically (twice a day) send a message with all upcoming events to all subscribers
-cron.launch(bot, events, chatIds);
+cron.launch(bot, events, database);
 
 
 bot.launch();

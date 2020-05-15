@@ -13,12 +13,12 @@
   "dependencies": {
     "dateformat": "^3.0.3",
     "dotenv": "^8.2.0",
+    "mysql": "^2.18.1",
     "node-cron": "^2.0.3",
     "node-ical": "^0.10.0",
     "telegraf": "^3.36.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0",
-    "typescript": "^3.8.2"
+    "nodemon": "^2.0"
   }
 }
