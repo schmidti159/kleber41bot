@@ -12,7 +12,7 @@ import {cron} from "./cron.js";
 import {database} from "./database.js";
 
 // get the events
-const events = ical.sync.parseFile('input/Leerungstermine50655.ics');
+const events = ical.sync.parseFile('input/Leerungstermine91973.ics');
 database.init();
 database.checkConnection();
 

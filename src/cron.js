@@ -7,7 +7,7 @@ import dateUtils from './utils/date.js';
 const cron = {
     launch: function (bot, events, database) {
         // periodically (twice a day) send a message with all upcoming events to all subscribers
-        nodeCron.schedule('0 16,18 * * *', () => {
+        nodeCron.schedule('0 11,19 * * *', () => {
 //        nodeCron.schedule('* * * * *', () => {
             database.getChatIds()
                 .then((result) => {
